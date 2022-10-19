@@ -1,6 +1,7 @@
-from Mazo import Mazo
+from JuegoControlador import *
 
 if __name__ == '__main__':
-    hola = Mazo()
-    hola.imprimircartas()
+    hola = JuegoControlador()
+
+
 

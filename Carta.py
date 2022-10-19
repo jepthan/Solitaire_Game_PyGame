@@ -1,5 +1,5 @@
 class Carta:
-    def __init__(self, _oculto, _valor, _simbolo, _nombre):
+    def __init__(self, _oculto: bool, _valor: int, _simbolo: str, _nombre: str):
         self.oculto = _oculto
         self.valor = _valor
         self.simbolo = _simbolo
