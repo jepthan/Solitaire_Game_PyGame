@@ -12,6 +12,11 @@ class Mazo:
         self.inittipo("♣")
         self.inittipo("♠")
 
+    def repartirmazo(self, mazo, cantidad: int):
+        for x in range(0, cantidad):
+            #print("index", x)
+            mazo.cartas.append(self.cartas.pop())
+
     def inittipo(self, _simbolo):
 
         for i in range(1, 14):
@@ -63,3 +68,6 @@ class MazoTipo(Mazo):
                 return True
             else:
                 return False
+
+
+
