@@ -17,7 +17,7 @@ class JuegoControlador:
         self.MazoPicas = MazoTipo("♠")
         # inicializar mazo de treboles
         self.MazoTrebol = MazoTipo("♣")
-        self.MazoTrebol.imprimircartas()
+        #self.MazoTrebol.imprimircartas()
         self.MazoEscalera = []
         for i in range(0, 7):
             self.MazoEscalera.append(Mazo())
@@ -37,7 +37,7 @@ class JuegoControlador:
         def motion(event):
             x, y = event.x, event.y
             print('{}, {}'.format(x, y))
-            canva.coords(rec, x, y, x+100, y+100)
+            canva.coords(rec, x-50, y-50, x+100-50, y+100-50)
         canva.pack()
         window.bind('<Motion>', motion)
         window.mainloop()
