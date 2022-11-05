@@ -14,7 +14,7 @@ class Mazo:
 
     def repartirmazo(self, mazo, cantidad: int):
         for x in range(0, cantidad):
-            #print("index", x)
+            # print("index", x)
             mazo.cartas.append(self.cartas.pop())
 
     def inittipo(self, _simbolo):
@@ -55,7 +55,7 @@ class MazoTipo(Mazo):
             return False
         if self.cartas:
             temp = self.cartas.pop()
-            if temp.valor+1 == _carta.valor:
+            if temp.valor + 1 == _carta.valor:
                 self.cartas.append(temp)
                 self.cartas.append(_carta)
                 return False
@@ -63,11 +63,17 @@ class MazoTipo(Mazo):
                 self.cartas.append(temp)
                 return False
         else:
-            if _carta.valor == 1:# append the A#
+            if _carta.valor == 1:  # append the A#
                 self.cartas.append(_carta)
                 return True
             else:
                 return False
 
-
-
+# TODO Cargar imagenes para cada una de las cartas
+# TODO Renderizar las imagenes utilizando la lista de python
+# TODO poder habilitar o des habilitar el renderizado de las imagenes
+# TODO Detectar si se esta haciendo click en una imagen en especifico
+# TODO Mover la imagen que esta en click stado y todas las imagenes asociadas
+# TODO Poner los diferentes mazos de cartas en determinadas posiciones
+# TODO Detectar si una imagen que esta en estado click esta dentro del area de los mazos
+# TODO Mazo que tiene una cola en vez de un stack que tiene las cartas sobrantes
