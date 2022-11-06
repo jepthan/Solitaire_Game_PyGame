@@ -1,49 +1,47 @@
 from Carta import Carta
 from Mazo import *
-from tkinter import *
+import pygame
+def main():
+    # inicializar mazo principal
+    MazoPrincipal = Mazo()
+    MazoPrincipal.llenarmazo()
+    MazoPrincipal.imprimircartas()
+    MazoPrincipal.desordenar()
+    # inicializar mazo de corazones
+    MazoCorazones = MazoTipo("♥")
+    # inicializar mazo de Diamantes
+    MazoDiamantes = MazoTipo("♦")
+    # inicializar mazo de picas
+    MazoPicas = MazoTipo("♠")
+    # inicializar mazo de treboles
+    MazoTrebol = MazoTipo("♣")
+    # self.MazoTrebol.imprimircartas()
+    MazoEscalera = []
+    for i in range(0, 7):
+        MazoEscalera.append(Mazo())
+        MazoPrincipal.repartirmazo(MazoEscalera[i], i + 1)
 
-class JuegoControlador:
+    for mazo in MazoEscalera:
+        print("")
+        mazo.imprimircartas()
 
-    def __init__(self):
-        # inicializar mazo principal
-        self.MazoPrincipal = Mazo()
-        self.MazoPrincipal.llenarmazo()
-        self.MazoPrincipal.desordenar()
-        # inicializar mazo de corazones
-        self.MazoCorazones = MazoTipo("♥")
-        # inicializar mazo de Diamantes
-        self.MazoDiamantes = MazoTipo("♦")
-        # inicializar mazo de picas
-        self.MazoPicas = MazoTipo("♠")
-        # inicializar mazo de treboles
-        self.MazoTrebol = MazoTipo("♣")
-        #self.MazoTrebol.imprimircartas()
-        self.MazoEscalera = []
-        for i in range(0, 7):
-            self.MazoEscalera.append(Mazo())
-            self.MazoPrincipal.repartirmazo(self.MazoEscalera[i], i+1)
-
-        for mazo in self.MazoEscalera:
-            print("")
-            mazo.imprimircartas()
-
-
-
-    def start(self):
-        window = Tk()
-        canva = Canvas(window, height=700, width=700, bg='lightblue')
-        rec = canva.create_rectangle(5, 5, 100, 100, fill='black')
-
-        def motion(event):
-            x, y = event.x, event.y
-            print('{}, {}'.format(x, y))
-            canva.coords(rec, x-50, y-50, x+100-50, y+100-50)
-        canva.pack()
-        window.bind('<Motion>', motion)
-        window.mainloop()
+    pygame.init()
+    clock = pygame.time.Clock()
+    screen = pygame.display.set_mode([700, 700])
+    running = True
+    grup = MazoPrincipal.generate_card_grup()
 
 
+    while running:
 
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+        grup.draw(screen)
+        screen.fill((255, 255, 255))
+        grup.draw(screen)
+        pygame.display.flip()
 
+    # Done! Time to quit.
 
-
+    pygame.quit()
