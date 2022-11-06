@@ -20,6 +20,10 @@ class Carta(pygame.sprite.Sprite):
             self.image = pygame.transform.scale(self.image, size)
         self.rect.center = [500, 100]
 
+    def update(self):
+
+        pass
+
     def updatevis(self):
         if self.oculto == True:
             self.image = pygame.image.load("Imagenes/Back.png")

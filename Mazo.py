@@ -5,15 +5,15 @@ import random
 
 
 class Mazo:
-    def __init__(self, posx , posy, offset):
+    def __init__(self, posx, posy, offset):
         self.cartas = []
         self.posx = posx
         self.posy = posy
         self.offset = offset
-
+        self.grup = pygame.sprite.Group()
 
     def generate_card_grup(self) -> pygame.sprite.Group:
-        grup = pygame.sprite.Group()
+        self.grup = pygame.sprite.Group()
         if not self.cartas:  ##if cartas is empty
             placholer = pygame.sprite.Sprite()
             placholer.__init__()
@@ -22,29 +22,36 @@ class Mazo:
             placholer.image = img
             placholer.rect = img.get_rect()
             placholer.rect.center = [self.posx, self.posy]
-            grup.add(placholer)
+            self.grup.add(placholer)
         for x in self.cartas:
             x.rect.center = [self.posx, self.posy]
-            grup.add(x)
-        return grup
+            self.grup.add(x)
+        return self.grup
+
     def generate_card_grup_lader(self) -> pygame.sprite.Group:
-        grup = pygame.sprite.Group()
-        if(not self.cartas):##if cartas is empty
+        self.grup = pygame.sprite.Group()
+        if (not self.cartas):  ##if cartas is empty
             placholer = pygame.sprite.Sprite()
             placholer.__init__()
             img = pygame.Surface([98, 135])
-            img.fill((200,200,200))
-            placholer.image =img
+            img.fill((200, 200, 200))
+            placholer.image = img
             placholer.rect = img.get_rect()
-            placholer.rect.center= [self.posx, self.posy]
-            grup.add(placholer)
+            placholer.rect.center = [self.posx, self.posy]
+            self.grup.add(placholer)
         i = 0
         for x in self.cartas:
-            x.rect.center = [self.posx, self.posy + self.offset*i]
+            x.rect.center = [self.posx, self.posy + self.offset * i]
             i += 1
-            grup.add(x)
+            self.grup.add(x)
 
-        return grup
+        return self.grup
+
+    def updateposCartas(self):
+        i = 0
+        for x in self.cartas:
+            x.rect.center = [self.posx, self.posy + self.offset * i]
+            i += 1
     def llenarmazo(self):
         self.inittipo("♣", 1, 4)
         self.inittipo("♦", 2, 4)
@@ -68,9 +75,9 @@ class Mazo:
             if i == 1:
                 self.cartas.append(Carta(True, i, _simbolo, "A", path))
             elif i <= 10:
-                self.cartas.append(Carta(True, i, _simbolo, str(i), path))
+                self.cartas.append(Carta(False, i, _simbolo, str(i), path))
             elif i == 11:
-                self.cartas.append(Carta(True, i, _simbolo, "J", path))
+                self.cartas.append(Carta(False, i, _simbolo, "J", path))
             elif i == 12:
                 self.cartas.append(Carta(True, i, _simbolo, "Q", path))
             elif i == 13:
@@ -93,9 +100,29 @@ class Mazo:
         else:
             return None
 
+    def getlistclicked(self, pos):
+        listclick = []
+
+        while self.cartas:
+            temp = self.cartas.pop()
+            if not temp.oculto:
+                listclick.append(temp)
+                if temp.rect.collidepoint(pos):
+                    return listclick
+            else:
+                self.cartas.append(temp)
+                break
+
+
+        listclick.reverse()
+        for carta in listclick:
+            self.cartas.append(carta)
+
+        return []
+
 
 class MazoTipo(Mazo):
-    def __init__(self, _simbolo: str, posx , posy, offset):
+    def __init__(self, _simbolo: str, posx, posy, offset):
         super().__init__(posx, posy, offset)
         self.simbolo = _simbolo
 

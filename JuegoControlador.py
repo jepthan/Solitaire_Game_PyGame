@@ -23,20 +23,21 @@ def main():
     MazoTrebol = MazoTipo("♣", 500, 100, 0)
     # self.MazoTrebol.imprimircartas()
     MazoEscalera = []
-    grupoEscalera = []
+
     for i in range(0, 7):
         MazoEscalera.append(Mazo(100 * i + 300, 250, 25))
         MazoPrincipal.repartirmazo(MazoEscalera[i], i + 1)
-        grupoEscalera.append(MazoEscalera[i].generate_card_grup_lader())
+        MazoEscalera[i].generate_card_grup_lader()
 
     for mazo in MazoEscalera:
         print("")
         mazo.imprimircartas()
 
-    grup = MazoPrincipal.generate_card_grup()
+    MazoPrincipal.generate_card_grup()
 
     click = False
     listaonclick = []
+    listaindex = 0
     while running:
 
         for event in pygame.event.get():
@@ -45,22 +46,31 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 click = True
                 pos = pygame.mouse.get_pos()
-
-
+                for mazo in MazoEscalera:
+                    listaonclick = mazo.getlistclicked(pos)
+                    listaindex += 1
+                    if listaonclick: break
 
             if event.type == pygame.MOUSEBUTTONUP:
                 click = False
+                listaonclick.reverse()
+                for carta in listaonclick:
+                    MazoEscalera[listaindex-1].recibircarta(carta)
+                    MazoEscalera[listaindex-1].updateposCartas()
+                listaindex = 0
+
             if click:
                 if event.type == pygame.MOUSEMOTION:
                     x, y = event.pos
+                    count = 0
                     for carta in listaonclick:
-                        carta.rect.center = [x, y]
+                        carta.rect.center = [x, y - 25 * count]
+                        count += 1
 
         screen.fill((255, 255, 255))
-        grup.draw(screen)
-        grupoEscalera[0].draw(screen)
+        MazoPrincipal.grup.draw(screen)
         for i in range(0, 7):
-            grupoEscalera[i].draw(screen)
+            MazoEscalera[i].grup.draw(screen)
 
         pygame.display.flip()
 
