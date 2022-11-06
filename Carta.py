@@ -14,7 +14,19 @@ class Carta(pygame.sprite.Sprite):
         self.simbolo = _simbolo
         self.nombre = _nombre
         random.seed(_path)
-        self.rect.center = [random.randint(0, 700), random.randint(0, 700)]
+        if self.oculto == True:
+            self.image = pygame.image.load("Imagenes/Back.png")
+            size = (98, 135)
+            self.image = pygame.transform.scale(self.image, size)
+        self.rect.center = [500, 100]
+
+    def updatevis(self):
+        if self.oculto == True:
+            self.image = pygame.image.load("Imagenes/Back.png")
+            size = (98, 135)
+            self.image = pygame.transform.scale(self.image, size)
+        else:
+            self.image = pygame.image.load(self.path)
 
     def __str__(self):
         return f'Carta {self.nombre}{self.simbolo} Valor: {self.valor}'

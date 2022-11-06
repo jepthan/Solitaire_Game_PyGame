@@ -5,15 +5,46 @@ import random
 
 
 class Mazo:
-    def __init__(self):
+    def __init__(self, posx , posy, offset):
         self.cartas = []
+        self.posx = posx
+        self.posy = posy
+        self.offset = offset
+
 
     def generate_card_grup(self) -> pygame.sprite.Group:
         grup = pygame.sprite.Group()
+        if not self.cartas:  ##if cartas is empty
+            placholer = pygame.sprite.Sprite()
+            placholer.__init__()
+            img = pygame.Surface([98, 135])
+            img.fill((200, 200, 200))
+            placholer.image = img
+            placholer.rect = img.get_rect()
+            placholer.rect.center = [self.posx, self.posy]
+            grup.add(placholer)
         for x in self.cartas:
+            x.rect.center = [self.posx, self.posy]
             grup.add(x)
         return grup
+    def generate_card_grup_lader(self) -> pygame.sprite.Group:
+        grup = pygame.sprite.Group()
+        if(not self.cartas):##if cartas is empty
+            placholer = pygame.sprite.Sprite()
+            placholer.__init__()
+            img = pygame.Surface([98, 135])
+            img.fill((200,200,200))
+            placholer.image =img
+            placholer.rect = img.get_rect()
+            placholer.rect.center= [self.posx, self.posy]
+            grup.add(placholer)
+        i = 0
+        for x in self.cartas:
+            x.rect.center = [self.posx, self.posy + self.offset*i]
+            i += 1
+            grup.add(x)
 
+        return grup
     def llenarmazo(self):
         self.inittipo("♣", 1, 4)
         self.inittipo("♦", 2, 4)
@@ -24,6 +55,10 @@ class Mazo:
         for x in range(0, cantidad):
             # print("index", x)
             mazo.cartas.append(self.cartas.pop())
+        temp = mazo.cartas.pop()
+        temp.oculto = False
+        temp.updatevis()
+        mazo.cartas.append(temp)
 
     def inittipo(self, _simbolo, offset: int, off2: int):
 
@@ -31,15 +66,15 @@ class Mazo:
             pos = ((i - 1) * off2) + offset  # calcula el nombre de la imagen
             path = f'Imagenes/({str(pos)}).png'
             if i == 1:
-                self.cartas.append(Carta(False, i, _simbolo, "A", path))
+                self.cartas.append(Carta(True, i, _simbolo, "A", path))
             elif i <= 10:
-                self.cartas.append(Carta(False, i, _simbolo, str(i), path))
+                self.cartas.append(Carta(True, i, _simbolo, str(i), path))
             elif i == 11:
-                self.cartas.append(Carta(False, i, _simbolo, "J", path))
+                self.cartas.append(Carta(True, i, _simbolo, "J", path))
             elif i == 12:
-                self.cartas.append(Carta(False, i, _simbolo, "Q", path))
+                self.cartas.append(Carta(True, i, _simbolo, "Q", path))
             elif i == 13:
-                self.cartas.append(Carta(False, i, _simbolo, "K", path))
+                self.cartas.append(Carta(True, i, _simbolo, "K", path))
 
     def desordenar(self):
         random.shuffle(self.cartas)
@@ -52,12 +87,16 @@ class Mazo:
         self.cartas.append(_carta)
 
     def popcarta(self):
-        return self.cartas.pop()
+        size = len(self.cartas)
+        if size > 0:
+            return self.cartas.pop()
+        else:
+            return None
 
 
 class MazoTipo(Mazo):
-    def __init__(self, _simbolo: str):
-        super().__init__()
+    def __init__(self, _simbolo: str, posx , posy, offset):
+        super().__init__(posx, posy, offset)
         self.simbolo = _simbolo
 
     def recibircartatipo(self, _carta: Carta):
@@ -82,7 +121,7 @@ class MazoTipo(Mazo):
 #
 # Done Cargar imagenes para cada una de las cartas
 # Done Renderizar las imagenes utilizando la lista de python
-# TODO poder habilitar o des habilitar el renderizado de las imagenes
+# INPROGRESS poder habilitar o des habilitar el renderizado de las imagenes
 # TODO Detectar si se esta haciendo click en una imagen en especifico
 # TODO Mover la imagen que esta en click stado y todas las imagenes asociadas
 # TODO Poner los diferentes mazos de cartas en determinadas posiciones
