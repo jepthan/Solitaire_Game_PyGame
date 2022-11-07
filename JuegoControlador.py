@@ -52,12 +52,27 @@ def main():
                     if listaonclick: break
 
             if event.type == pygame.MOUSEBUTTONUP:
+                pos = pygame.mouse.get_pos()
                 click = False
+                coliccion = False
+                for mazo in MazoEscalera:
+                    if mazo.placeholder.rect.collidepoint(pos):
+                        for carta in listaonclick:
+                            coliccion = mazo.recibirCartaEscalera(carta)
+                        break
+
                 listaonclick.reverse()
-                for carta in listaonclick:
-                    MazoEscalera[listaindex-1].recibircarta(carta)
-                    MazoEscalera[listaindex-1].updateposCartas()
+                if not coliccion:
+                    for carta in listaonclick:
+                        MazoEscalera[listaindex-1].recibircarta(carta)
+                        MazoEscalera[listaindex-1].updateposCartas()
+                else:
+                    MazoEscalera[listaindex - 1].chagevis()
+                for mazo in MazoEscalera:
+                    mazo.updateposCartas()
                 listaindex = 0
+
+
 
             if click:
                 if event.type == pygame.MOUSEMOTION:
