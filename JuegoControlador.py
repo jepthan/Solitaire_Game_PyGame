@@ -106,8 +106,6 @@ def main():
                             coliccion = mazo.recibirCartaEscalera(carta)
                         listaonclick.reverse()
 
-
-
                 if not coliccion:
                     listaonclick.reverse()
                     for carta in listaonclick:
@@ -143,7 +141,7 @@ def main():
             MazoEscalera[i].generate_card_grup_lader()
             MazoEscalera[i].grup.draw(screen)
 
-        #Genera el grupo de cartas Trebol y las dibuja en pantalla
+        # Genera el grupo de cartas Trebol y las dibuja en pantalla
         MazoTrebol.generate_card_grup()
         MazoTrebol.grup.draw(screen)
 
