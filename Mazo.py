@@ -17,9 +17,10 @@ class Mazo:
 
     def generate_card_grup(self) -> pygame.sprite.Group:
         self.grup = pygame.sprite.Group()
+        self.grup.__init__()
         self.placeholder.__init__()
         img = pygame.Surface([98, 135])
-        img.fill((0, 0, 0))
+        img.fill((200, 200, 200))
         self.placeholder.image = img
         self.placeholder.rect = img.get_rect()
         self.placeholder.rect.center = [self.posx, self.posy]
@@ -31,7 +32,8 @@ class Mazo:
         return self.grup
 
     def generate_card_grup_lader(self) -> pygame.sprite.Group:
-        self.grup = pygame.sprite.Group()
+        self.grup = pygame.sprite.OrderedUpdates()
+        self.grup.__init__()
         self.placeholder.__init__()
         img = pygame.Surface([98, 135])
         img.fill((0, 0, 0))
@@ -63,7 +65,6 @@ class Mazo:
         for x in range(0, cantidad):
             # print("index", x)
             mazo.cartas.append(self.cartas.pop())
-        mazo.rect = mazo.cartas[0].rect
         temp = mazo.cartas.pop()
         temp.oculto = False
         temp.updatevis()
@@ -96,8 +97,8 @@ class Mazo:
         self.cartas.append(_carta)
 
     def popcarta(self):
-        size = len(self.cartas)
-        if size > 0:
+
+        if self.cartas:
             return self.cartas.pop()
         else:
             return None
@@ -125,6 +126,9 @@ class Mazo:
         if self.cartas:
             cartatop = self.cartas.pop()
         else:
+            if carta.valor == 13:
+                self.cartas.append(carta)
+                return True
             return False
 
         if cartatop.Color == carta.Color:
@@ -138,12 +142,6 @@ class Mazo:
         self.cartas.append(cartatop)
         return False
 
-    def addlist(self, list_cartas):
-        list_cartas.reverse()
-        for x in list_cartas:
-            if not self.recibirCartaEscalera(x):
-                break
-
     def chagevis(self):
         if self.cartas:
             temp = self.cartas.pop()
@@ -151,11 +149,31 @@ class Mazo:
             temp.updatevis()
             self.cartas.append(temp)
 
+    def OcultarTop(self):
+        if self.cartas:
+            carta = self.cartas.pop()
+            carta.oculto = True
+            carta.updatevis()
+            self.recibircarta(carta)
+    def MostrarTop(self):
+        if self.cartas:
+            carta = self.cartas.pop()
+            carta.oculto = False
+            carta.updatevis()
+            self.recibircarta(carta)
+
 
 class MazoTipo(Mazo):
     def __init__(self, _simbolo: str, posx, posy, offset):
         super().__init__(posx, posy, offset)
         self.simbolo = _simbolo
+        self.placeholder.__init__()
+        img = pygame.Surface([98, 135])
+        img.fill((200, 200, 200))
+        self.placeholder.image = img
+        self.placeholder.rect = img.get_rect()
+        self.placeholder.rect.center = [self.posx, self.posy]
+        self.grup.add(self.placeholder)
 
     def recibircartatipo(self, _carta: Carta):
         if _carta.simbolo != self.simbolo:
@@ -165,7 +183,7 @@ class MazoTipo(Mazo):
             if temp.valor + 1 == _carta.valor:
                 self.cartas.append(temp)
                 self.cartas.append(_carta)
-                return False
+                return True
             else:
                 self.cartas.append(temp)
                 return False
@@ -175,6 +193,11 @@ class MazoTipo(Mazo):
                 return True
             else:
                 return False
+    def colisiona(self,pos):
+        if self.placeholder.rect.collidepoint(pos):
+            return True
+        else:
+            return False
 
 # Done Cargar imagenes para cada una de las cartas
 # Done Renderizar las imagenes utilizando la lista de python

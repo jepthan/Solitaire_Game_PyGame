@@ -18,7 +18,7 @@ class Carta(pygame.sprite.Sprite):
             self.Color = 'r'
         self.nombre = _nombre
         random.seed(_path)
-        if self.oculto == True:
+        if self.oculto:
             self.image = pygame.image.load("Imagenes/Back.png").convert()
             size = (98, 135)
             self.image = pygame.transform.scale(self.image, size)
