@@ -36,7 +36,7 @@ class Mazo:
         self.grup.__init__()
         self.placeholder.__init__()
         img = pygame.Surface([98, 135])
-        img.fill((0, 0, 0))
+        img.fill((200, 200, 200))
         self.placeholder.image = img
         self.placeholder.rect = img.get_rect()
         self.placeholder.rect.center = [self.posx, self.posy]
