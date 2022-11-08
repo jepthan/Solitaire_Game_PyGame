@@ -40,34 +40,46 @@ def main():
     listaindex = 0
     listaEscalera = False
     while running:
-
+        #Eventos de py game
         for event in pygame.event.get():
+            #evento de terminar programa
             if event.type == pygame.QUIT:
                 running = False
+            #mouse click
             if event.type == pygame.MOUSEBUTTONDOWN:
                 click = True
+                #optiene posicion del mouse
                 pos = pygame.mouse.get_pos()
+                #revisa todas los mazos de escalera
                 for mazo in mazo_escalera:
                     listaonclick = mazo.getlistclicked(pos)
+                    #usado para recuperar los elementos de la lista
                     listaindex += 1
                     if listaonclick:
+                        #set para que recupere los elementos de la lista
                         listaEscalera = True
                         break
                     else:
+                        #un set no recibio nada lista on click
                         listaEscalera = False
+                #Revisar colicion con mazo principal
                 if MazoPrincipal.placeholder.rect.collidepoint(pos):
+                    #si mazo principal tiene cartas la transfiere al segundario
                     if MazoPrincipal.cartas:
                         carta = MazoPrincipal.popcarta()
                         carta.oculto = False
                         carta.updatevis()
                         MazoSegundario.recibircarta(carta)
                         MazoPrincipal.OcultarTop()
+                    #Mazo principal no tiene cartas transfiere mazo segundario a principal
                     else:
                         MazoSegundario.repartirmazo(MazoPrincipal, len(MazoSegundario.cartas))
                         MazoPrincipal.OcultarTop()
+
                 if MazoSegundario.placeholder.rect.collidepoint(pos):
                     if MazoSegundario.cartas:
                         listaonclick.append(MazoSegundario.cartas.pop())
+            #mouse realise click
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
                 click = False
@@ -125,7 +137,7 @@ def main():
                 for mazo in mazo_escalera:
                     mazo.updateposCartas()
                 listaindex = 0
-
+            #mouse hold
             if click:
                 if event.type == pygame.MOUSEMOTION:
                     x, y = event.pos
