@@ -31,23 +31,6 @@ class Mazo:
             self.grup.add(x)
         return self.grup
 
-    def generate_card_grup_lader(self) -> pygame.sprite.Group:
-        self.grup = pygame.sprite.OrderedUpdates()
-        self.grup.__init__()
-        self.placeholder.__init__()
-        img = pygame.Surface([98, 135])
-        img.fill((200, 200, 200))
-        self.placeholder.image = img
-        self.placeholder.rect = img.get_rect()
-        self.placeholder.rect.center = [self.posx, self.posy]
-        self.grup.add(self.placeholder)
-        i = 0
-        for x in self.cartas:
-            x.rect.center = [self.posx, self.posy + self.offset * i]
-            i += 1
-            self.grup.add(x)
-
-        return self.grup
 
     def updateposCartas(self):
         i = 0
@@ -122,25 +105,6 @@ class Mazo:
 
         return []
 
-    def recibirCartaEscalera(self, carta):
-        if self.cartas:
-            cartatop = self.cartas.pop()
-        else:
-            if carta.valor == 13:
-                self.cartas.append(carta)
-                return True
-            return False
-
-        if cartatop.Color == carta.Color:
-            self.cartas.append(cartatop)
-            return False
-        else:
-            if cartatop.valor - 1 == carta.valor:
-                self.cartas.append(cartatop)
-                self.cartas.append(carta)
-                return True
-        self.cartas.append(cartatop)
-        return False
 
     def chagevis(self):
         if self.cartas:
@@ -155,6 +119,7 @@ class Mazo:
             carta.oculto = True
             carta.updatevis()
             self.recibircarta(carta)
+
     def MostrarTop(self):
         if self.cartas:
             carta = self.cartas.pop()
@@ -162,38 +127,7 @@ class Mazo:
             carta.updatevis()
             self.recibircarta(carta)
 
-
-class MazoTipo(Mazo):
-    def __init__(self, _simbolo: str, posx, posy, offset):
-        super().__init__(posx, posy, offset)
-        self.simbolo = _simbolo
-        self.placeholder.__init__()
-        img = pygame.Surface([98, 135])
-        img.fill((200, 200, 200))
-        self.placeholder.image = img
-        self.placeholder.rect = img.get_rect()
-        self.placeholder.rect.center = [self.posx, self.posy]
-        self.grup.add(self.placeholder)
-
-    def recibircartatipo(self, _carta: Carta):
-        if _carta.simbolo != self.simbolo:
-            return False
-        if self.cartas:
-            temp = self.cartas.pop()
-            if temp.valor + 1 == _carta.valor:
-                self.cartas.append(temp)
-                self.cartas.append(_carta)
-                return True
-            else:
-                self.cartas.append(temp)
-                return False
-        else:
-            if _carta.valor == 1:  # append the A#
-                self.cartas.append(_carta)
-                return True
-            else:
-                return False
-    def colisiona(self,pos):
+    def colisiona(self, pos):
         if self.placeholder.rect.collidepoint(pos):
             return True
         else:
@@ -204,6 +138,6 @@ class MazoTipo(Mazo):
 # INPROGRESS poder habilitar o des habilitar el renderizado de las imagenes
 # Done Detectar si se esta haciendo click en una imagen en especifico
 # Done Mover la imagen que esta en click stado y todas las imagenes asociadas
-# TODO Poner los diferentes mazos de cartas en determinadas posiciones
+# Done Poner los diferentes mazos de cartas en determinadas posiciones
 # Done sortoff Detectar si una imagen que esta en estado click esta dentro del area de los mazos
-# TODO Mazo que tiene una cola en vez de un stack que tiene las cartas sobrantes
+# Done Mazo que tiene una cola en vez de un stack que tiene las cartas sobrantes

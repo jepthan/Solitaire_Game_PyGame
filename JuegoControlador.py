@@ -1,5 +1,6 @@
-from Carta import Carta
-from Mazo import *
+
+from MazoTipo import *
+from MazoEscalera import *
 import pygame
 
 
@@ -23,12 +24,12 @@ def main():
     # inicializar mazo de treboles
     MazoTrebol = MazoTipo("♣", 800, 100, 0)
     # self.MazoTrebol.imprimircartas()
-    MazoEscalera = []
+    mazo_escalera = []
 
     for i in range(0, 7):
-        MazoEscalera.append(Mazo(100 * i + 300, 250, 25))
-        MazoPrincipal.repartirmazo(MazoEscalera[i], i + 1)
-        MazoEscalera[i].generate_card_grup_lader()
+        mazo_escalera.append(MazoEscalera(100 * i + 300, 250, 25))
+        MazoPrincipal.repartirmazo(mazo_escalera[i], i + 1)
+        mazo_escalera[i].generate_card_grup_lader()
 
     MazoPrincipal.generate_card_grup()
 
@@ -46,7 +47,7 @@ def main():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 click = True
                 pos = pygame.mouse.get_pos()
-                for mazo in MazoEscalera:
+                for mazo in mazo_escalera:
                     listaonclick = mazo.getlistclicked(pos)
                     listaindex += 1
                     if listaonclick:
@@ -72,34 +73,39 @@ def main():
                 click = False
                 coliccion = False
                 if MazoPicas.colisiona(pos):
-                    carta = listaonclick.pop()
-                    if not MazoPicas.recibircartatipo(carta):
-                        listaonclick.append(carta)
-                    else:
-                        MazoEscalera[listaindex - 1].MostrarTop()
-                    print("Picas")
+                    if listaonclick:
+                        carta = listaonclick.pop()
+                        if not MazoPicas.recibircartatipo(carta):
+                            listaonclick.append(carta)
+                        else:
+                            mazo_escalera[listaindex - 1].MostrarTop()
+
                 elif MazoDiamantes.colisiona(pos):
-                    carta = listaonclick.pop()
-                    if not MazoDiamantes.recibircartatipo(carta):
-                        listaonclick.append(carta)
-                    else:
-                        MazoEscalera[listaindex - 1].MostrarTop()
-                    print("Diamantes")
+                    if listaonclick:
+                        carta = listaonclick.pop()
+                        if not MazoDiamantes.recibircartatipo(carta):
+                            listaonclick.append(carta)
+                        else:
+                            mazo_escalera[listaindex - 1].MostrarTop()
+
                 elif MazoCorazones.colisiona(pos):
-                    carta = listaonclick.pop()
-                    if not MazoCorazones.recibircartatipo(carta):
-                        listaonclick.append(carta)
-                    else:
-                        MazoEscalera[listaindex - 1].MostrarTop()
-                    print("Corazonas")
+                    if listaonclick:
+                        carta = listaonclick.pop()
+                        if not MazoCorazones.recibircartatipo(carta):
+                            listaonclick.append(carta)
+                        else:
+                            mazo_escalera[listaindex - 1].MostrarTop()
+
                 elif MazoTrebol.colisiona(pos):
-                    carta = listaonclick.pop()
-                    if not MazoTrebol.recibircartatipo(carta):
-                        listaonclick.append(carta)
-                    else:
-                        MazoEscalera[listaindex - 1].MostrarTop()
-                    print("Trebol")
-                for mazo in MazoEscalera:
+                    if listaonclick:
+                        carta = listaonclick.pop()
+                        if not MazoTrebol.recibircartatipo(carta):
+                            listaonclick.append(carta)
+                        else:
+                            mazo_escalera[listaindex - 1].MostrarTop()
+
+                for mazo in mazo_escalera:
+
                     if mazo.placeholder.rect.collidepoint(pos):
                         listaonclick.reverse()
                         for carta in listaonclick:
@@ -110,13 +116,13 @@ def main():
                     listaonclick.reverse()
                     for carta in listaonclick:
                         if listaEscalera:
-                            MazoEscalera[listaindex - 1].recibircarta(carta)
-                            MazoEscalera[listaindex - 1].updateposCartas()
+                            mazo_escalera[listaindex - 1].recibircarta(carta)
+                            mazo_escalera[listaindex - 1].updateposCartas()
                         else:
                             MazoSegundario.recibircarta(carta)
                 else:
-                    MazoEscalera[listaindex - 1].chagevis()
-                for mazo in MazoEscalera:
+                    mazo_escalera[listaindex - 1].chagevis()
+                for mazo in mazo_escalera:
                     mazo.updateposCartas()
                 listaindex = 0
 
@@ -138,8 +144,8 @@ def main():
         MazoPrincipal.generate_card_grup()
         MazoPrincipal.grup.draw(screen)
         for i in range(0, 7):
-            MazoEscalera[i].generate_card_grup_lader()
-            MazoEscalera[i].grup.draw(screen)
+            mazo_escalera[i].generate_card_grup_lader()
+            mazo_escalera[i].grup.draw(screen)
 
         # Genera el grupo de cartas Trebol y las dibuja en pantalla
         MazoTrebol.generate_card_grup()
