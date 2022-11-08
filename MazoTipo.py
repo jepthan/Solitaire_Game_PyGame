@@ -32,3 +32,12 @@ class MazoTipo(Mazo):
             else:
                 return False
 
+    def fill(self):
+        if self.cartas:
+            carta = self.cartas.pop()
+            if carta.valor == 13:
+                return True
+            else:
+                return False
+        else:
+            return False

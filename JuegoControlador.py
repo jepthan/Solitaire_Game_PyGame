@@ -4,6 +4,18 @@ from MazoEscalera import *
 import pygame
 
 
+def checkwin(mazo1, mazo2, mazo3, mazo4):
+    if mazo1.fill() and mazo2.fill and mazo3.fill() and mazo4.fill:
+        return True
+    else:
+        raise False
+
+
+#font = pygame.font.SysFont(None, 24)
+#img = font.render('hello', True, (0,0,0))
+#rect = img.get_rect()
+#pygame.draw.rect(rect)
+
 def main():
     # inicializar pygame
     pygame.init()
@@ -39,11 +51,16 @@ def main():
     MazoSegundario = Mazo(220, 100, 0)
     listaindex = 0
     listaEscalera = False
+    Mazo_picas = False
+    Mazo_corazones = False
+    Mazo_diamantes = False
+    Mazo_trebol=False
     while running:
-
+        print(checkwin(MazoDiamantes, MazoTrebol, MazoCorazones, MazoPicas))
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            #on click
             if event.type == pygame.MOUSEBUTTONDOWN:
                 click = True
                 pos = pygame.mouse.get_pos()
@@ -68,6 +85,26 @@ def main():
                 if MazoSegundario.placeholder.rect.collidepoint(pos):
                     if MazoSegundario.cartas:
                         listaonclick.append(MazoSegundario.cartas.pop())
+                if MazoPicas.colisiona(pos):
+                    if MazoPicas.cartas:
+                        listaonclick.append(MazoPicas.popcarta())
+                        Mazo_picas = True
+
+                elif MazoDiamantes.colisiona(pos):
+                    if MazoDiamantes.cartas:
+                        listaonclick.append(MazoDiamantes.popcarta())
+                        Mazo_diamantes = True
+                elif MazoCorazones.colisiona(pos):
+                    if MazoCorazones.cartas:
+                        listaonclick.append(MazoCorazones.popcarta())
+                        Mazo_corazones = True
+
+                elif MazoTrebol.colisiona(pos):
+                    if MazoTrebol.cartas:
+                        listaonclick.append(MazoTrebol.popcarta())
+                        Mazo_trebol = True
+
+            #on click realise
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
                 click = False
@@ -118,6 +155,14 @@ def main():
                         if listaEscalera:
                             mazo_escalera[listaindex - 1].recibircarta(carta)
                             mazo_escalera[listaindex - 1].updateposCartas()
+                        elif Mazo_picas:
+                            MazoPicas.recibircartatipo(listaonclick.pop())
+                        elif Mazo_corazones:
+                            MazoCorazones.recibircartatipo(listaonclick.pop())
+                        elif Mazo_trebol:
+                            MazoTrebol.recibircartatipo(listaonclick.pop())
+                        elif Mazo_diamantes:
+                            MazoDiamantes.recibircartatipo(listaonclick.pop())
                         else:
                             MazoSegundario.recibircarta(carta)
                 else:
