@@ -11,19 +11,23 @@ def checkwin(mazo1, mazo2, mazo3, mazo4):
         return False
 
 
-
-
 def main():
+    Again = False
     # inicializar pygame
     pygame.init()
     # inicializar pantalla de py game
     screen = pygame.display.set_mode([1000, 700])
     # runnig es variable que mantiene el game loop activo
     running = True
-    font = pygame.font.SysFont('freesansbold.ttf', 24)
-    img = font.render('hello', True, (200,200,100), (100,200,50))
-    rect = img.get_rect()
+    font = pygame.font.SysFont('freesansbold.ttf', 50)
+    img = font.render('Jugar otra vez', True, (200, 200, 100), (100, 200, 50))
+    jugarotravez = img.get_rect()
+    jugarotravez.center = (300, 350)
 
+    font = pygame.font.SysFont('freesansbold.ttf', 50)
+    img2 = font.render('Salir', True, (200, 200, 100), (100, 200, 50))
+    salir = img.get_rect()
+    salir.center = (700, 350)
 
     # inicializar mazo principal
     MazoPrincipal = Mazo(100, 100, 0)
@@ -56,13 +60,13 @@ def main():
     Mazo_picas = False
     Mazo_corazones = False
     Mazo_diamantes = False
-    Mazo_trebol=False
+    Mazo_trebol = False
     while running:
-        screen.blit(img, rect)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
-            #on click
+            # on click
             if event.type == pygame.MOUSEBUTTONDOWN:
                 click = True
                 pos = pygame.mouse.get_pos()
@@ -106,7 +110,7 @@ def main():
                         listaonclick.append(MazoTrebol.popcarta())
                         Mazo_trebol = True
 
-            #on click realise
+            # on click realise
             if event.type == pygame.MOUSEBUTTONUP:
                 pos = pygame.mouse.get_pos()
                 click = False
@@ -209,8 +213,18 @@ def main():
         MazoPicas.grup.draw(screen)
         MazoSegundario.grup.draw(screen)
         listaclickgrup.draw(screen)
+
         if checkwin(MazoDiamantes, MazoTrebol, MazoCorazones, MazoPicas):
-            pass
-        pygame.display.flip()
+            screen.blit(img, jugarotravez)
+            screen.blit(img2, salir)
+            pos = pygame.mouse.get_pos()
+            if salir.collidepoint(pos):
+                running = False
+            elif jugarotravez.collidepoint(pos):
+                running = False
+                Again = True
+            pygame.display.flip()
 
     pygame.quit()
+    if Again:
+        main()
