@@ -8,13 +8,10 @@ def checkwin(mazo1, mazo2, mazo3, mazo4):
     if mazo1.fill() and mazo2.fill and mazo3.fill() and mazo4.fill:
         return True
     else:
-        raise False
+        return False
 
 
-#font = pygame.font.SysFont(None, 24)
-#img = font.render('hello', True, (0,0,0))
-#rect = img.get_rect()
-#pygame.draw.rect(rect)
+
 
 def main():
     # inicializar pygame
@@ -23,6 +20,11 @@ def main():
     screen = pygame.display.set_mode([1000, 700])
     # runnig es variable que mantiene el game loop activo
     running = True
+    font = pygame.font.SysFont('freesansbold.ttf', 24)
+    img = font.render('hello', True, (200,200,100), (100,200,50))
+    rect = img.get_rect()
+
+
     # inicializar mazo principal
     MazoPrincipal = Mazo(100, 100, 0)
     MazoPrincipal.llenarmazo()
@@ -56,7 +58,7 @@ def main():
     Mazo_diamantes = False
     Mazo_trebol=False
     while running:
-        print(checkwin(MazoDiamantes, MazoTrebol, MazoCorazones, MazoPicas))
+        screen.blit(img, rect)
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -207,6 +209,8 @@ def main():
         MazoPicas.grup.draw(screen)
         MazoSegundario.grup.draw(screen)
         listaclickgrup.draw(screen)
+        if checkwin(MazoDiamantes, MazoTrebol, MazoCorazones, MazoPicas):
+            pass
         pygame.display.flip()
 
     pygame.quit()
