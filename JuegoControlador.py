@@ -223,7 +223,7 @@ def main():
             elif jugarotravez.collidepoint(pos):
                 running = False
                 Again = True
-            pygame.display.flip()
+        pygame.display.flip()
 
     pygame.quit()
     if Again:
