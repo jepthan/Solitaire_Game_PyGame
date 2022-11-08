@@ -1,4 +1,4 @@
-
+from Carta import *
 from MazoTipo import *
 from MazoEscalera import *
 import pygame
