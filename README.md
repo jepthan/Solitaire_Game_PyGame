@@ -50,4 +50,5 @@ Foundation: Move cards to the foundation piles sorted by suit from Ace to King.
 Winning: You win the game once all cards are placed in the foundation piles.
 
 ## Screenshots
+![dgutq0t-d8f5451c-03de-4755-a825-c22f9f75f377](https://github.com/user-attachments/assets/b67e400a-d4ae-4a4a-8d66-c14707231581)
 
